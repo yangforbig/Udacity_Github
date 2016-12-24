@@ -1,0 +1,89 @@
+SelectPercentile features:  ['expenses', 'other', 'from_poi_to_this_person', 'from_this_person_to_poi', 'bonus']
+Training Decsion Tree: 
+........
+Tuning hyperparameters for recall
+Best parameters set found on development set:
+ 
+{'max_features': 3, 'criterion': 'entropy', 'class_weight': 'balanced'}
+Detailed classification report: 
+   mean_fit_time  mean_score_time  mean_test_score  mean_train_score  \
+0       0.000694         0.000499          0.60935               1.0   
+1       0.000649         0.000465          0.60585               1.0   
+2       0.000605         0.000504          0.61615               1.0   
+3       0.000795         0.000552          0.66075               1.0   
+4       0.000341         0.000449          0.58440               1.0   
+5       0.000331         0.000417          0.60205               1.0   
+6       0.000365         0.000425          0.61545               1.0   
+7       0.000439         0.000594          0.65800               1.0   
+
+  param_class_weight param_criterion param_max_features  \
+0           balanced            gini                  2   
+1           balanced            gini                  3   
+2           balanced         entropy                  2   
+3           balanced         entropy                  3   
+4               None            gini                  2   
+5               None            gini                  3   
+6               None         entropy                  2   
+7               None         entropy                  3   
+
+                                              params  rank_test_score  \
+0  {u'max_features': 2, u'criterion': u'gini', u'...                5   
+1  {u'max_features': 3, u'criterion': u'gini', u'...                6   
+2  {u'max_features': 2, u'criterion': u'entropy',...                3   
+3  {u'max_features': 3, u'criterion': u'entropy',...                1   
+4  {u'max_features': 2, u'criterion': u'gini', u'...                8   
+5  {u'max_features': 3, u'criterion': u'gini', u'...                7   
+6  {u'max_features': 2, u'criterion': u'entropy',...                4   
+7  {u'max_features': 3, u'criterion': u'entropy',...                2   
+
+   split0_test_score       ...         split999_test_score  \
+0               1.00       ...                        0.40   
+1               0.75       ...                        0.45   
+2               0.70       ...                        0.40   
+3               0.75       ...                        0.35   
+4               0.40       ...                        0.40   
+5               0.70       ...                        0.45   
+6               1.00       ...                        0.40   
+7               0.70       ...                        0.35   
+
+   split999_train_score  split99_test_score  split99_train_score  \
+0                   1.0                0.60                  1.0   
+1                   1.0                0.45                  1.0   
+2                   1.0                0.65                  1.0   
+3                   1.0                0.70                  1.0   
+4                   1.0                0.70                  1.0   
+5                   1.0                0.70                  1.0   
+6                   1.0                0.60                  1.0   
+7                   1.0                0.70                  1.0   
+
+   split9_test_score  split9_train_score  std_fit_time  std_score_time  \
+0               0.70                 1.0      0.003172        0.002731   
+1               0.40                 1.0      0.003039        0.002593   
+2               0.70                 1.0      0.002940        0.002703   
+3               0.45                 1.0      0.003381        0.002847   
+4               0.45                 1.0      0.002273        0.002583   
+5               1.00                 1.0      0.002237        0.002488   
+6               0.70                 1.0      0.002314        0.002514   
+7               0.45                 1.0      0.002588        0.002958   
+
+   std_test_score  std_train_score  
+0        0.175328              0.0  
+1        0.170127              0.0  
+2        0.169652              0.0  
+3        0.174333              0.0  
+4        0.167650              0.0  
+5        0.175038              0.0  
+6        0.179510              0.0  
+7        0.184516              0.0  
+
+[8 rows x 2013 columns]
+Best Tree: 
+DecisionTreeClassifier(class_weight='balanced', criterion='entropy',
+            max_depth=None, max_features=3, max_leaf_nodes=None,
+            min_impurity_split=1e-07, min_samples_leaf=1,
+            min_samples_split=2, min_weight_fraction_leaf=0.0,
+            presort=False, random_state=10, splitter='best')
+feature importances in the best tree: 
+[('expenses', 0.39411086559879055), ('other', 0.28247568987490296), ('from_poi_to_this_person', 0.0), ('from_this_person_to_poi', 0.12761640472183072), ('bonus', 0.19579703980447574)]
+The number of features when tree is performed: 
+5
