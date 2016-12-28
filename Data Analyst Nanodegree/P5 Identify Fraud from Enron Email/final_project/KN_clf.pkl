@@ -1,9 +1,0 @@
-(dp0
-S'n_neighbors'
-p1
-I3
-sS'algorithm'
-p2
-S'auto'
-p3
-s.

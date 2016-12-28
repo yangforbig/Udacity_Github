@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 import sys
 import pickle
 sys.path.append("../tools/")
@@ -16,8 +14,6 @@ from sklearn.svm import SVC
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
 ### The first feature must be "poi".
-features_list = ['poi','salary'] # You will need to use more features
-
 ### Load the dictionary containing the dataset
 with open("final_project_dataset.pkl", "r") as data_file:
     data_dict = pickle.load(data_file)
@@ -54,11 +50,8 @@ my_dataset = data_dict
 
 data = featureFormat(my_dataset, my_feature, sort_keys = True)
 labels, features = targetFeatureSplit(data)
-# transform train data to logarithmic
-for entry in features:
-    for e in range(len(entry)):
-        if entry[e] !=0:
-            entry[e] = np.log(entry[e])
+
+
 
 # feature scale first
 from sklearn.preprocessing import MinMaxScaler
@@ -76,17 +69,10 @@ for e in range(len(selector.get_support())):
         SP_features.append(my_feature[1:][e])
 print "SelectPercentile features: ", SP_features
 
-
-
 #updated myfeature
 def get_data(features_list, full_data):
     data = featureFormat(full_data, features_list, sort_keys = True)
     labels, features = targetFeatureSplit(data)
-
-    #features = np.log(features)
-
-    #scaler = MinMaxScaler()
-    #scale_features = scaler.fit_transform(features)
     return features, labels
 
 ### Task 4: Try a varity of classifiers
@@ -96,14 +82,13 @@ def get_data(features_list, full_data):
 ### http://scikit-learn.org/stable/modules/pipeline.html
 
 '''
-Decision Tree and Knearnest neighour will be used in this project. Becasue, from the plots before, we can see
-there are lot of noise points in the dataset, so SVM is not good choice for this case. PCA is good for feature reduction.
-But in this case, since it is a financial fraud, the explanation of is more intuitive and important than the model accuracy.
-PCA will transform the features and the new features are hard to self-explained. Decision Tree is the first choice and
-good for this uniquely small dataset, even though it would make an overfitting model. An overfitting model for this case is
-quite resonable, since the fraud is seond to none in American history. Knearest neighours would be served as a comparation to
+Decision Tree, Knearnest neighour and Naive Bayes will be used in this project. Becasue, from the plots before, we can see
+there are lot of noise points in this skewed dataset, so SVM is not good choice for this case. PCA is good for feature reduction.
+But in this case, a financial fraud detection, model explanation is more intuitive and important than the model accuracy.
+PCA will transform the features and the new features are hard to interpret. Decision Tree is the first choice and
+good for this uniquely small dataset, even though it would take a risk of overfitting. An overfitting model for this particular case is
+quite resonable, since the fraud is second to none in American history. Knearest neighours and Naive Bayes would be served as a comparation to
 Decsion Tree method.
-
 '''
 ## DecisionTree
 
@@ -113,15 +98,15 @@ def DecisionTree_clf(train, label):
     param_grid = [{'max_features':[2,3],
                    'class_weight':['balanced', None],
                    'criterion':['gini','entropy']}]
-    scores = ['recall']
-    for score in scores:
-        print 'Tuning hyperparameters for %s' % score
-        cv = StratifiedShuffleSplit(n_splits=1000, test_size=0.1, random_state=0)
-        clf = GridSearchCV(tree_clf, param_grid, scoring='%s_macro' % score, cv=cv)
-        clf.fit(train, label)
-        print 'Best parameters set found on development set:\n '
-        print clf.best_params_
-        print "Detailed classification report: "
+    score = 'recall'
+
+    print 'Tuning hyperparameters for %s' % score
+    cv = StratifiedShuffleSplit(n_splits=1000, test_size=0.1, random_state=0)
+    clf = GridSearchCV(tree_clf, param_grid, scoring='%s_macro' % score, cv=cv)
+    clf.fit(train, label)
+    print 'Best parameters set found on development set:\n '
+    print clf.best_params_
+    print "Detailed classification report: "
     print pd.DataFrame(clf.cv_results_)
 
 
@@ -130,11 +115,8 @@ def DecisionTree_clf(train, label):
     #print features_importance
     return clf.best_estimator_
 
-'''
+
 features, labels = get_data(['poi']+SP_features, my_dataset)
-
-
-
 # Decision Tree
 tree_clf = DecisionTree_clf(features, labels)
 print 'Best Tree: '
@@ -144,15 +126,17 @@ importances = tree_clf.feature_importances_
 print zip(SP_features, importances)
 print "The number of features when tree is performed: "
 print tree_clf.n_features_
+
+
+
+
 '''
-
-
-
-'''
-the importance of feature 'from_poi_to_this_person' is almost 0. So, take it away from the feature list and train the tree again
+the importance of feature 'from_poi_to_this_person' and 'salary' are the two most irrelevant features.
+So, take them away from the feature list and train the tree again
 '''
 # Retrain Decison Tress
-three_features = SP_features.remove('from_poi_to_this_person')
+SP_features.remove('shared_receipt_with_poi')
+SP_features.remove('salary')
 features, labels = get_data(['poi']+SP_features, my_dataset)
 tree_clf = DecisionTree_clf(features, labels)
 print 'Best Tree: '
@@ -167,14 +151,11 @@ print tree_clf.n_features_
 '''
 For model evaluation, recall and precision methods are applied, especially the higher recall of the model, the better detection for the fraud demeanour. Becasue
 we want the false negative rate as few as possible, we don't want the crimials neglected.
-From the output.txt, the mean recall for the first tree with four features is 0.63,
-the mean recall for the second tree with three features is 0.64. So, the second tree is better.
 '''
-'''
+
 # decision tree graph
 import pydotplus
 from sklearn import tree
-
 dot_data = tree.export_graphviz(tree_clf, out_file=None,
                          feature_names=SP_features,
                          class_names=['1', '0'],
@@ -183,8 +164,6 @@ graph = pydotplus.graph_from_dot_data(dot_data)
 graph.write_pdf('Enrontreegraph.pdf')
 
 # Use Gaussian Naive Bayes
-
-
 from sklearn import metrics
 from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import cross_val_score
@@ -202,31 +181,36 @@ def GaussianNB_clf(features, labels):
     print "Detailed classification report: "
     print pd.DataFrame(clf.cv_results_)
     return clf.best_estimator_
-
 GNB_clf = GaussianNB_clf(features, labels)
 
 # Knearest neighbours
+# logarithmic transformation
+def log_data(features):
+    for entry in features:
+        for e in range(len(entry)):
+            if entry[e] !=0:
+                entry[e] = np.log(entry[e])
+    return features
+
 
 def KN_clf(train, label):
     print "Traning KNearest neighbours classifier: \n........"
     KN_clf = KNeighborsClassifier()
     param_grid = [{'n_neighbors':[3,4,5,6,7,8],
                    'algorithm':['auto']}]
-    scores = ['recall']
-    for score in scores:
-        print 'Tuning hyperparameters for %s' % score
-        cv = StratifiedShuffleSplit(n_splits=1000, test_size=0.1, random_state=0)
-        clf = GridSearchCV(KN_clf, param_grid, scoring='%s_macro' % score, cv=cv)
-        clf.fit(train, label)
-        print 'Best parameters set found on development set:\n '
-        print clf.best_params_
-        print "Detailed classification report: "
+    score = 'recall'
+    print 'Tuning hyperparameters for %s' % score
+    cv = StratifiedShuffleSplit(n_splits=1000, test_size=0.1, random_state=0)
+    clf = GridSearchCV(KN_clf, param_grid, scoring='%s_macro' % score, cv=cv)
+    clf.fit(train, label)
+    print 'Best parameters set found on development set:\n '
+    print clf.best_params_
+    print "Detailed classification report: "
     print pd.DataFrame(clf.cv_results_)
     return clf.best_estimator_
 
-KNeighbors_clf = KN_clf(features, labels)
-
-
+log_features = log_data(features)
+KNeighbors_clf = KN_clf(log_features, labels)
 #Support Vector Machine
 def SVM_clf(train, label):
     print "Training SVM classifier: \n........"
@@ -245,33 +229,22 @@ def SVM_clf(train, label):
     print pd.DataFrame(clf.cv_results_)
     return clf.best_estimator_
 
-
-#print features[0:2]
 svm_clf = SVM_clf(features, labels)
-
-
-
-
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall
 ### using our testing script. Check the tester.py script in the final project
 ### folder for details on the evaluation method, especially the test_classifier
 ### function. Because of the small size of the dataset, the script uses
 ### stratified shuffle split cross validation. For more info:
 ### http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html
-
-
-
-
-
-
 ### Task 6: Dump your classifier, dataset, and features_list so anyone can
 ### check your results. You do not need to change anything below, but make sure
 ### that the version of poi_id.py that you submit can be run on its own and
 ### generates the necessary .pkl files for validating your results.
 
-'''
+
+
 def dump_classifier_and_data(clf, dataset, feature_list):
-    CLF_PICKLE_FILENAME = ["tree_clf.pkl", "GNB_clf.pkl", "KN_clf.pkl", "svm_clf.pkl"]
+    CLF_PICKLE_FILENAME = ["tree_clf.pkl", "GNB_clf.pkl", "KNeighbors_clf.pkl", "svm_clf.pkl"]
     DATASET_PICKLE_FILENAME = "my_dataset.pkl"
     FEATURE_LIST_FILENAME = "SP_features.pkl"
     for filename in CLF_PICKLE_FILENAME:
@@ -288,7 +261,6 @@ def dump_classifier_and_data(clf, dataset, feature_list):
         pickle.dump(feature_list, featurelist_outfile)
 
 
-#clf_list = [tree_clf, GNB_clf, KNeighbors_clf, svm_clf]
-#for clf in clf_list:
-dump_classifier_and_data(tree_clf, my_dataset, ['poi']+SP_features)
-q
+clf_list = [tree_clf, GNB_clf, KNeighbors_clf, svm_clf]
+for clf in clf_list:
+    dump_classifier_and_data(clf, my_dataset, ['poi']+SP_features)
