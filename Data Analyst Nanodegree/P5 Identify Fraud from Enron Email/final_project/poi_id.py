@@ -95,7 +95,7 @@ Decsion Tree method.
 def DecisionTree_clf(train, label):
     print "Training Decsion Tree: \n........"
     tree_clf = DecisionTreeClassifier(random_state=10)
-    param_grid = [{'max_features':[2,3],
+    param_grid = [{'max_features':[i+1 for i in range(len(train[0]))],
                    'class_weight':['balanced', None],
                    'criterion':['gini','entropy']}]
     score = 'recall'
@@ -128,12 +128,12 @@ print "The number of features when tree is performed: "
 print tree_clf.n_features_
 
 
-
-
 '''
 the importance of feature 'from_poi_to_this_person' and 'salary' are the two most irrelevant features.
 So, take them away from the feature list and train the tree again
 '''
+
+
 # Retrain Decison Tress
 SP_features.remove('shared_receipt_with_poi')
 SP_features.remove('salary')
@@ -146,7 +146,6 @@ importances = tree_clf.feature_importances_
 print zip(SP_features, importances)
 print "The number of features when tree is performed: "
 print tree_clf.n_features_
-
 
 '''
 For model evaluation, recall and precision methods are applied, especially the higher recall of the model, the better detection for the fraud demeanour. Becasue
