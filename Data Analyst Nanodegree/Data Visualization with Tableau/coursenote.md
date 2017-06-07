@@ -7,4 +7,4 @@ Lesson 1 Data Visualization Fundamentals
 3.  Color is often used to encode a third dimension since it is really difficult 
 	to interpret three dimensional data on a two dimensional plane
 	
-4.  [Great Article about Visual Encoding](https://www.perceptualedge.com/articles/b-eye/encoding_values_in_graph.pdf）
+4.  [Great Article about Visual Encoding](https://www.perceptualedge.com/articles/b-eye/encoding_values_in_graph.pdf)
