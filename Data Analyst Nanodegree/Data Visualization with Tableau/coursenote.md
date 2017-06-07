@@ -8,6 +8,7 @@ Lesson 1 Data Visualization Fundamentals
 	to interpret three dimensional data on a two dimensional plane
 	
 4.  [Great Article about Visual Encoding](https://www.perceptualedge.com/articles/b-eye/encoding_values_in_graph.pdf)
+<<<<<<< HEAD
 
 5.  Choropleths use color to encode another value associated with the location on the map 
 such as population, population density, GDP, etc. 
@@ -17,3 +18,4 @@ such as countries - to encode a value, typically along with some color encoding
 6.  [Data Visualization: Rules for Encoding Values in Graph ](http://extremepresentation.typepad.com/blog/2015/01/announcing-the-slide-chooser.html)
 
 7.  [Selecting the Right Graph for Your Message](http://www.perceptualedge.com/articles/ie/the_right_graph.pdf)
+
