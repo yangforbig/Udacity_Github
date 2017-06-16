@@ -65,3 +65,23 @@ Even without chart junk, many graphs devote a lot of visual space to non-data el
 As designers, we should strive to reduce the amount of non-data-ink to remove distractions from the data.
 
 16.  [This article](http://www.storytellingwithdata.com/blog/2014/01/multifaceted-data-and-story) is a good example of how your story can change by emphasizing different visual elements
+
+17.  [Tableau Tutorial on Dashboard and Stories](https://www.tableau.com/learn/tutorials/on-demand/getting-started-dashboards-and-stories)
+
+
+Global, SuperStore Data: contains customers purchase specific product 
+
+
+18. A context filter will be computed first, then all other filters will run on its result.
+
+19. 
+
+
+
+
+
+
+
+
+
+
