@@ -1,30 +1,32 @@
-validity:
+# intro to descriptive statistics
+
+1. validity:
 (1) who you investigate 
 (2) how many you investigate
 (3) what method you used 
 
-construct:
+2. construct:
 object that hasn't been measured --- operational definition 
 
-sampling error µ-x(bar)
+3. sampling error µ-x(bar)
 
-sample might not good enough to predict the population characteristics that is why we use interval.
+4. point estimate might not good enough to predict the population characteristics that is why we use interval.
 
-random sample means each subject has equal chance to be selected 
+5. random sample means each subject has equal chance to be selected 
 
-when we visualize data, it is easier to draw conclusion.
+6. when we visualize data, it is easier to draw conclusion.
 
-correlation does not cause
+7. correlation does not imply causation
 
-Golden Arches Theory: no two counties with a McDonald have ever gone into a war since opening the store.
-
-
-Show correlation: observational studies 
-
-Show causation: control experiments 
+8. Golden Arches Theory: no two counties with a McDonald have ever gone into a war since opening the store.
 
 
-Blind and Double blind:
+9. Show correlation: observational studies 
+
+   Show causation: control experiments 
+
+
+11. Blind and Double blind:
 
 neither the researcher nor the participant know which experiment they receive
 
@@ -36,7 +38,7 @@ A lurking variable is a variable that is not included as an explanatory or
 response variable in the analysis but can affect the interpretation of relationships between variables
 
 
-positive skewed, negative skewed
+positive skewed(left tail longer), negative skewed(right tail longer)
 
 uniform distribution has no mode.
 
@@ -67,6 +69,8 @@ Bessel's correction: Since the sample tend be drawn from the majority of populat
 ## Sampling distribution 
 
 central limit theorem: N(x(bar), sigma / n = SE)
+
+
 
 
 
