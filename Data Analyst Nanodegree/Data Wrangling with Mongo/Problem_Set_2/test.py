@@ -1,1 +1,1 @@
-print 2 
+import html_paser

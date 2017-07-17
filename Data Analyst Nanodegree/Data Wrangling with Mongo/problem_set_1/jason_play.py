@@ -45,85 +45,97 @@ def pretty_print(data, indent=4):
     else:
         print data
 
-'''
 def main():
 
-    Modify the function calls and indexing below to answer the questions on
-    the next quiz. HINT: Note how the output we get from the site is a
-    multi-level JSON document, so try making print statements to step through
-    the structure one level at a time or copy the output to a separate output
-    file.
+    # Modify the function calls and indexing below to answer the questions on
+    # the next quiz. HINT: Note how the output we get from the site is a
+    # multi-level JSON document, so try making print statements to step through
+    # the structure one level at a time or copy the output to a separate output
+    # file.
 
-
-    results = query_by_name(ARTIST_URL, query_type["simple"], "Nirvana")
-    #pretty_print(results)
-
-    artist_id = results["artists"][1]["id"]
-    #print "\nARTIST:"
-    pretty_print(results["artists"])
-
-    artist_data = query_site(ARTIST_URL, query_type["releases"], artist_id)
-    releases = artist_data["releases"]
-    #print "\nONE RELEASE:"
-    pretty_print(releases[0], indent=2)
-
-    release_titles = [r["title"] for r in releases]
-
-
-
-    #print "\nALL TITLES:"
-    #for t in release_titles:
+    #
+    # results = query_by_name(ARTIST_URL, query_type["simple"], "Nirvana")
+    #
+    # pretty_print(results)
+    #
+    # artist_id = results["artists"][1]["id"]
+    # print "\nARTIST:"
+    # pretty_print(results["artists"])
+    #
+    # artist_data = query_site(ARTIST_URL, query_type["releases"], artist_id)
+    # releases = artist_data["releases"]
+    # print "\nONE RELEASE:"
+    # pretty_print(releases, indent=2)
+    # release_titles = [r["title"] for r in releases]
+    #
+    #
+    #
+    # print "\nALL TITLES:"
+    #
+    # for t in release_titles:
     #    print t
-'''
-# How many bands named "First AID KIT"
-'''
-first_result = query_by_name(ARTIST_URL, query_type["simple"], "FIRST AID KIT")
-pretty_print(first_result)
-count = 0
-for e in first_result['artists']:
-    if e['name'].upper() == 'FIRST AID KIT':
-        count += 1
-print count
-'''
-# Begin area name for Queen?
-'''
-second_result = query_by_name(ARTIST_URL, query_type["simple"], "QUEEN")
-pretty_print(second_result)
-for e in second_result['artists']:
-    print e.get('begin-area')
 
-'''
+# How many bands named "First AID KIT"
+
+    first_result = query_by_name(ARTIST_URL, query_type["simple"], "FIRST AID KIT")
+    #pretty_print(first_result)
+    count = 0
+    for e in first_result['artists']:
+        if e['name'].upper() == 'FIRST AID KIT':
+            count += 1
+
+    print "How many bands named FIRST AID KIT? "
+    print count
+
+
+# Begin area name for Queen?
+
+    second_result = query_by_name(ARTIST_URL, query_type["simple"], "QUEEN")
+    #pretty_print (second_result)
+    print "begin-area name for Queen: "
+    for e in second_result['artists']:
+        if e['name'].upper() == "QUEEN":
+            if e.get('begin-area'):
+                print e.get('begin-area')
+
 # Spanish ALIAS for Beatles?
 # Language code for Spainsh is es
-'''
-third_result = query_by_name(ARTIST_URL, query_type['simple'], "BEATLES")
-#pretty_print(third_result)
 
-for e in third_result['artists']:
-    if e.get('aliases') is not None:
-        aliases = e.get('aliases')
-        for e in aliases:
-            if e.get('locale') == 'es':
-                print e
+    third_result = query_by_name(ARTIST_URL, query_type['simple'], "BEATLES")
+    #pretty_print(third_result)
 
-'''
+    for e in third_result['artists']:
+        if e.get('aliases'):
+            aliases = e.get('aliases')
+            for a in aliases:
+                if a.get('locale') == 'es':
+                    print '\n'
+                    print "Spanish ALITAS for Beatles"
+                    print a['name']
 
-# Nirvana Disambiguation
 
-fourth_result = query_by_name(ARTIST_URL, query_type['simple'], "Nirvana")
-pretty_print(fourth_result)
 
-for e in fourth_result['artists']:
-    if e['name'].upper() == 'NIRVANA':
-        print e.get('disambiguation')
+#Nirvana Disambiguation
+
+    fourth_result = query_by_name(ARTIST_URL, query_type['simple'], "Nirvana")
+    pretty_print(fourth_result)
+
+    for e in fourth_result['artists']:
+        if e['name'].upper() == 'NIRVANA':
+            print '\n'
+            print 'Nirvana Disambiguation'
+            print e.get('disambiguation')
 
 
 # When was one direction formed?
-'''
-fifth_result = query_by_name(ARTIST_URL, query_type['simple'], "ONE DIRECTION")
-#pretty_print(fifth_result)
 
-for e in fifth_result['artists']:
-    if e['name'].upper() == "ONE DIRECTION":
-        print e.get('life-span')
-'''
+    fifth_result = query_by_name(ARTIST_URL, query_type['simple'], "ONE DIRECTION")
+    #pretty_print(fifth_result)
+
+    for e in fifth_result['artists']:
+        if e['name'].upper() == "ONE DIRECTION":
+            print "When was one direction formed"
+            print e.get('life-span')
+
+
+main()

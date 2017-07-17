@@ -29,8 +29,8 @@ import requests
 
 URL_MAIN = "http://api.nytimes.com/svc/"
 URL_POPULAR = URL_MAIN + "mostpopular/v2/"
-API_KEY = { "popular": "",
-            "article": ""}
+API_KEY = { "popular": "6e8944fa23634ad99e3ca509693670fe",
+            "article": "6e8944fa23634ad99e3ca509693670fe"}
 
 
 def get_from_file(kind, period):
@@ -53,15 +53,6 @@ def article_overview(kind, period):
                 if e['format'] == 'Standard Thumbnail':
                     urls.append(e['url'])
     return (titles, urls)
-
-
-
-
-
-
-
-    return (titles, urls)
-
 
 def query_site(url, target, offset):
     # This will set up the query with the API key and offset
@@ -100,7 +91,7 @@ def get_popular(url, kind, days, section="all-sections", offset=0):
 def save_file(kind, period):
     # This will process all results, by calling the API repeatedly with supplied offset value,
     # combine the data and then write all results in a file.
-    data = get_popular(URL_POPULAR, "viewed", 1)
+    data = get_popular(URL_POPULAR, "view", 1)
     num_results = data["num_results"]
     full_data = []
     with codecs.open("popular-{0}-{1}.json".format(kind, period), encoding='utf-8', mode='w') as v:

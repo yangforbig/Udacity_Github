@@ -10,6 +10,7 @@ def parse_file(datafile):
                 for col in range(sheet.ncols)]
                     for r in range(sheet.nrows)]
 
+    print data                
     print "\nList Comprehension"
     print "data[3][2]:"
     print data[3][2]
@@ -58,3 +59,4 @@ def parse_file(datafile):
     return data
 
 data = parse_file(datafile)
+print data
