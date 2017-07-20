@@ -2,11 +2,19 @@
 """
 Use an aggregation query to answer the following question.
 
-Which Region in India has the largest number of cities with longitude between
-75 and 80?
+Extrapolating from an earlier exercise in this lesson, find the average
+regional city population for all countries in the cities collection. What we
+are asking here is that you first calculate the average city population for each
+region in a country and then calculate the average of all the regional averages
+for a country.
+  As a hint, _id fields in group stages need not be single values. They can
+also be compound keys (documents composed of multiple fields). You will use the
+same aggregation operator in more than one stage in writing this aggregation
+query. I encourage you to write it one stage at a time and test after writing
+each stage.
 
 Please modify only the 'make_pipeline' function so that it creates and returns
-an aggregation pipeline that can be passed to the MongoDB aggregate function.
+an aggregation  pipeline that can be passed to the MongoDB aggregate function.
 As in our examples in this lesson, the aggregation pipeline should be a list of
 one or more dictionary objects. Please review the lesson examples if you are
 unsure of the syntax.
@@ -29,12 +37,7 @@ def get_db(db_name):
 
 def make_pipeline():
     # complete the aggregation pipeline
-    pipeline = [{"$match" : {"country" : {"$eq" : "India"},
-                             "lon" : {"$gte" : 75, "$lte" : 80}}},
-                {"$unwind" : "$isPartOf"},
-                {"$group" : {"_id" : "$isPartOf", "count" : {"$sum" : 1} }},
-                {"$sort" : {"count" : -1}},
-                {"$limit" : 1}]
+    pipeline = [ ]
     return pipeline
 
 def aggregate(db, pipeline):
@@ -48,7 +51,14 @@ if __name__ == '__main__':
     pipeline = make_pipeline()
     result = aggregate(db, pipeline)
     import pprint
-    pprint.pprint(result[0])
-    # assert len(result) == 1
-    # assert result[0]["_id"] == 'Tamil Nadu'
-    # assert result[0]["count"] == 424
+    if len(result) < 150:
+        pprint.pprint(result)
+    else:
+        pprint.pprint(result[:100])
+    key_pop = 0
+    for country in result:
+        if country["_id"] == 'Lithuania':
+            assert country["_id"] == 'Lithuania'
+            assert abs(country["avgRegionalPopulation"] - 14750.784447977203) < 1e-10
+            key_pop = country["avgRegionalPopulation"]
+    assert {'_id': 'Lithuania', 'avgRegionalPopulation': key_pop} in result

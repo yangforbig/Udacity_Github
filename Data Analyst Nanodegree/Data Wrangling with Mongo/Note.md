@@ -1,10 +1,21 @@
+This course is really about getting data ready so that any analysis built on a solid foundation
+of good data. We will work with lots of different type of data, music, energy, wikipedia and twitter.
+we will also teach you how to work with data in most of the formats you are likely to see, Json, XML, CSV, EXCEL, and HTML
+In the last half the course show you how to store data in MongoDB and use it to support analysis. MongDB is a powerful and
+scalabe tool for big data problems. 
+
+
 Lesson 1. Data Extraction Fundamentals
 
 1. What is data wrangling ?
 
 The process of gathering, extracting, cleaning, and storing our data. 
 
-2. We need to access our data to:
+2. Quality of data:
+
+Generally we should not trust any data we get. Where it does come from? Everywhere that humans
+are involved, there is a potential for problems with our data.
+
 
 - Test Assumptions about:
 
@@ -18,7 +29,13 @@ The process of gathering, extracting, cleaning, and storing our data.
 
 - Finding Missing Values
 
+
 3. Tabular Formats
+
+EXCEL, Google spreedsheets
+
+each is an item. Each column makes up field
+values are stored in cell
 
 
 4. CSV file 
@@ -31,14 +48,47 @@ CSV is lightweight
 
 - Just the data itself
 
-- Don't need special software
+- Don't need special software to open file 
 
 - all spreadsheets read/write csv
 
-5. Whenever working with CSV file, using csv.DictReader
 
 
-6. Data Modeling in JSON:
+5. Whenever working with CSV file, using csv.DictReader (assume the first row is header)
+
+```
+#each line is a dictionary consists of each field name and corresponding values
+import csv
+data = []
+with open(filename, "wb") as sd:
+	r = csv.Dictreader(sd)
+	for line in r:
+		data.append(line)
+```
+
+6. XLRD module to read excel document (.xls, .xlsx)
+
+```
+import xlrd
+workbook = xlrd.open_workbook(datafile)
+sheet = workbook.sheet_by_index(0)
+
+
+    data = [[sheet.cell_value(r, col) 
+                for col in range(sheet.ncols)] 
+                    for r in range(sheet.nrows)]
+
+# row 3 col 2
+data[3][2]
+
+# convert time to python datetime
+
+xlrd.xldate_as_tuple(cell_value,0)
+
+
+
+
+7. Data Modeling in JSON:
 
 - Items may have different fields
 
@@ -47,16 +97,10 @@ CSV is lightweight
 - may have nested array
 
 
-Json tutorial:
+[Json tutorial](https://www.w3schools.com/js/js_json_intro.asp)
 
+[Introducing Json](http://www.json.org/)
 
-If you're unfamiliar with JSON, or would just like a refresher, W3Schools has a great tutorial on the subject.
-
-JSON Tutorial
-
-You can also check out
-
-http://www.json.org/
 
 You can find information about Python's json module on this page of the Python documentation. 
 Note that JSON arrays are interpreted as lists and JSON objects as dictionaries, 
@@ -97,6 +141,11 @@ for child in root:
 	
 root.findall(xpath)
 
+
+# iterparse
+
+for event, elem in ET.iterparse(osm.file):
+	
 
 ```
 
@@ -353,12 +402,16 @@ db.cities.remove({"name" : {"$exist" : 0}})
 
 db.cities.drop() # remove all the documents
 
+
 Lesson 6 aggregational framework (built-in analytical tool)
 
 
 1.  Aggregation pipeline 
 
+
 collection --> stage 1 --> stage2 ---> .... ---> result 
+
+
 
 $group and $sort
 
@@ -386,6 +439,18 @@ db.tweets.aggregate([
 						 "screen_name" : "$user.screen_name"}},
 		{"$sort" : {"ratio" : -1}},
 		{"$limit" : 1}])
+		
+$ project 
+
+- included fields from the original document 
+
+- insert computed fields
+
+- renamed fields
+
+- create fields that hold subdocuments
+
+ 
 
  6. unwind （we want use the elements in the array area to analysze）
  
@@ -454,6 +519,13 @@ def mentioned_unique_users():
  $near 
  
  
+  
+ Lesson 7 Case Study Open Streetmap 
+ 
+email = "tony@tiremove_thisger.net"
+m = re.search("remove_this", email)
+email[:m.start()] + email[m.end():]
+'tony@tiger.net'
  
  
  
